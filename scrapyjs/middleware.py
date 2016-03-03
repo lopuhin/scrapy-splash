@@ -55,9 +55,11 @@ class SplashMiddleware(object):
             # don't process the same request more than once
             return
 
-        if request.method != 'GET':
+        if (request.method != 'GET' and
+                splash_options.get('endpoint') != 'execute'):
             logger.warn(
-                "Currently only GET requests are supported by SplashMiddleware;"
+                "Currently only GET requests are supported by SplashMiddleware"
+                " (unless you use 'execute' endpoint and pass method yourself);"
                 " %(request)s will be handled without Splash",
                 {'request': request},
                 extra={'spider': spider}
