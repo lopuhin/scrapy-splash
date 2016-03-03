@@ -120,6 +120,8 @@ class SplashMiddleware(object):
             self.crawler.stats.inc_value(
                 'splash/%s/response_count/%s' % (endpoint, response.status)
             )
+            url = splash_options['args']['url']
+            response = response.replace(url=url)
 
         return response
 
