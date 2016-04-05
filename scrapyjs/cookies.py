@@ -52,12 +52,28 @@ def har_to_cookie(har_cookie):
     'this is a test'
     >>> cookie.get_nonstandard_attr('HttpOnly')
     True
+
+
+    >>> har_cookie =  {
+    ...     "name": "TestCookie2",
+    ...     "value": "Cookie Value",
+    ...     "expires": 1248463230,
+    ... }
+    >>> cookie = har_to_cookie(har_cookie)
+    >>> cookie.name
+    'TestCookie2'
+    >>> cookie.expires
+    1248463230
     """
 
     expires_timestamp = None
     if har_cookie.get('expires'):
-        expires = time.strptime(har_cookie['expires'], "%Y-%m-%dT%H:%M:%SZ")
-        expires_timestamp = calendar.timegm(expires)
+        expires = har_cookie['expires']
+        if isinstance(expires, int):
+            expires_timestamp = expires
+        else:
+            expires = time.strptime(expires, "%Y-%m-%dT%H:%M:%SZ")
+            expires_timestamp = calendar.timegm(expires)
 
     kwargs = dict(
         version=har_cookie.get('version') or 0,
