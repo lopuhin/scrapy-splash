@@ -92,6 +92,7 @@ class SplashCookiesMiddleware(object):
         # removed ones, so we first clear all cookies and then load them.
         jar.clear()
         har_to_jar(jar, response.data['cookies'])
+
         response.cookiejar = jar
         return response
 
